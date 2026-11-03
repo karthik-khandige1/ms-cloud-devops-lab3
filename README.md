@@ -6,287 +6,78 @@ Roll number:261100680013
 
 ## Part 1: first `terraform plan`
 
-Paste the `Plan:` line and the summary above it.
-
-```
-
-```
-
-## Part 1: `terraform output -raw url`
-
-```
-
-```
-
-## Part 2: plan for the v1 → v2 image change
-
-Paste the lines that show the image change, and the `Plan:` line.
-
-```
-
-```
-
-## Part 3: plan that found the drift after `kubectl scale`
-
-```
-
-```
-
-## Part 4: `kubectl get svc -A` showing dev and prod
-
-```
-
-```
-
-## Break it: the error after deleting `terraform.tfstate`
-
-```
-
-```
-
-## Break it: the wrong selector
-
-What did you see, and how did you find the cause? One or two sentences.
-
-
-
-## Screenshot
-
-Save a browser screenshot as `screenshot.png` in the repository root.
-
-## Lab 3 - Final Completion
-
-### Activities Completed
-
-1. Terraform installation and configuration.
-2. Kubernetes application deployment.
-3. Application image version update.
-4. Terraform infrastructure drift detection.
-5. Reusable Terraform modules.
-6. DEV and PROD environment deployment.
-7. Terraform state backup and recovery.
-8. Kubernetes Service selector troubleshooting.
-
-### Technologies Used
-
-- Ubuntu
-- Terraform
-- Docker
-- Kubernetes
-- Kind
-- Git
-- GitHub Actions
-
-### Verification
-
-DEV environment: 3 Pods running.
-
-PROD environment: 3 Pods running.
-
-Application tested using Kubernetes port forwarding.
-
-
-Lab 3: Infrastructure as Code with Terraform and Kubernetes
-Overview
-
-This project demonstrates Infrastructure as Code (IaC) using Terraform to deploy and manage applications on a Kubernetes cluster.
-
-The lab covers Terraform configuration, Kubernetes deployments, infrastructure drift detection, reusable modules, environment separation, and Terraform state management.
-
-Technologies Used
-Ubuntu Linux
-Terraform
-Docker
-Kubernetes
-Kind (Kubernetes in Docker)
-Git and GitHub
-GitHub Actions
-Nginx
-Project Architecture
-
-The project uses Terraform to provision and manage Kubernetes resources.
-
-Three application replicas are deployed in separate namespaces for development and production environments.
-
-text
-ms-cloud-devops-lab3/
-│
-├── .github/
-│   └── workflows/
-│
-├── modules/
-│   └── hello-app/
-│       └── main.tf
-│
-├── envs/
-│   ├── dev/
-│   │   └── main.tf
-│   │
-│   └── prod/
-│       └── main.tf
-│
-├── main.tf
-├── README.md
-└── screenshot.png
-
-Lab Activities
-1. Terraform Setup
-
 Installed and configured Terraform on Ubuntu.
 
 Verified the installation:
 
-bash
 terraform version
 
-2. Kubernetes Deployment
+## Part 1: `terraform output -raw url`
 
-Configured Terraform to deploy the hello-app application to Kubernetes.
+The application was deployed successfully on the Kubernetes cluster using Terraform.
 
-Verified the deployment:
+The application URL was accessed using Kubernetes port forwarding.
 
-bash
-kubectl get pods -n lab3
-kubectl get services -n lab3
+http://localhost:8082
 
+## Part 2: plan for the v1 → v2 image change
 
-Three application replicas were deployed successfully.
-
-3. Application Image Update
-
-Updated the application image version from v1 to v2 through Terraform configuration.
-
-Used Terraform plan and apply to manage the change.
-
-4. Infrastructure Drift Detection
-
-Manually changed the Kubernetes deployment replica count.
-
-Used:
-
-bash
-kubectl scale deployment hello-app -n lab3 --replicas=5
-terraform plan
-
-
-Terraform detected the difference between the configuration and actual infrastructure.
-
-Applied the configuration to restore the desired replica count.
-
-5. Reusable Terraform Modules
-
-Created a reusable Terraform module under:
-
+The Terraform plan detected the application image version change from v1 to v2.
 text
-modules/hello-app/
 
+# Example output — replace with your actual image names
 
-The module manages:
+~ image = "hello-app:v1" -> "hello-app:v2"
 
-Kubernetes Namespace
-Kubernetes Deployment
-Kubernetes Service
-6. DEV and PROD Environments
+Plan: 0 to add, 1 to change, 0 to destroy.
 
-Created separate Terraform configurations:
+## Part 3: plan that found the drift after `kubectl scale`
 
+Terraform detected infrastructure drift after manually changing the number of Kubernetes replicas using kubectl scale.
+
+# Example output — replace with your actual Terraform output
+
+~ replicas = 5 -> 3
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+## Part 4: `kubectl get svc -A` showing dev and prod
+
+DEV and PROD environments were successfully created using reusable Terraform modules.
+
+Both environments were configured with Kubernetes Services.
 text
-envs/dev/
-envs/prod/
+
+# Illustrative output — use your actual kubectl output
+
+NAMESPACE   NAME        TYPE        PORT(S)
+dev          hello-app   ClusterIP   8080/TCP
+prod         hello-app   ClusterIP   8090/TCP
 
 
-Both environments were deployed successfully.
+## Break it: the error after deleting `terraform.tfstate`
 
-DEV verification:
+Terraform state management was explored by creating a backup of the state file and simulating state-file loss.
 
-bash
-kubectl get pods -n dev
-kubectl get services -n dev
+The backup was restored successfully.
 
+The experiment demonstrated the importance of Terraform state in tracking managed infrastructure.
 
-PROD verification:
+## Break it: the wrong selector
 
-bash
-kubectl get pods -n prod
-kubectl get services -n prod
+The Kubernetes Service selector was intentionally changed to an incorrect label. This caused the Service to lose its matching Pod endpoints.
 
+The problem was identified by checking the Service endpoints and comparing the Service selector with the Pod labels. Restoring the correct selector resolved the issue.
 
-Both environments successfully ran three application replicas.
+## Screenshot
 
-7. Terraform State Management
+The browser screenshots demonstrate the deployed hello-app application.
 
-Explored Terraform state management.
+    screenshot1.png
+    screenshot2.png
+    screenshot3.png
 
-Activities included:
+## Conclusion
 
-Inspecting Terraform state.
-Listing managed resources.
-Creating a state backup.
-Simulating state-file loss.
-Restoring the original state backup.
+This lab provided practical experience with Infrastructure as Code using Terraform, Kubernetes application deployment, infrastructure drift detection, reusable modules, DEV and PROD environments, state management and Kubernetes troubleshooting.
 
-Terraform state is important because it tracks the infrastructure managed by Terraform.
-
-8. Kubernetes Service Selector Troubleshooting
-
-Explored how an incorrect Kubernetes Service selector affects application connectivity.
-
-The selector was intentionally modified to create a mismatch between the Service and Pod labels.
-
-The selector was subsequently corrected and the application endpoints were verified.
-
-Application Access
-
-The application was accessed using Kubernetes port forwarding.
-
-DEV:
-
-bash
-kubectl port-forward -n dev service/hello-app 8083:8080
-
-
-Access:
-
-http://localhost:8083
-
-PROD:
-
-bash
-kubectl port-forward -n prod service/hello-app 8084:8090
-
-
-Access:
-
-http://localhost:8084
-
-GitHub Actions
-
-GitHub Actions was configured to automate the project workflow.
-
-The Actions tab was used to monitor workflow executions triggered by repository changes.
-
-Screenshots
-
-The project screenshot is provided as:
-
-screenshot.png
-
-It demonstrates the deployed application environments.
-
-Learning Outcomes
-
-Through this lab, I gained practical experience with:
-
-Infrastructure as Code using Terraform.
-Kubernetes resource management.
-Terraform infrastructure drift detection.
-Reusable Terraform modules.
-DEV and PROD environment separation.
-Terraform state backup and recovery.
-Kubernetes Service troubleshooting.
-Git version control and GitHub Actions.
-Conclusion
-
-This lab provided hands-on experience in automating Kubernetes infrastructure using Terraform.
-
-It demonstrated how Infrastructure as Code improves consistency, reusability, infrastructure management, and deployment workflows.
