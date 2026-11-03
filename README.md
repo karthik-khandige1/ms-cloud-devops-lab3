@@ -53,3 +53,34 @@ What did you see, and how did you find the cause? One or two sentences.
 ## Screenshot
 
 Save a browser screenshot as `screenshot.png` in the repository root.
+
+## Lab 3 - Final Completion
+
+### Activities Completed
+
+1. Terraform installation and configuration.
+2. Kubernetes application deployment.
+3. Application image version update.
+4. Terraform infrastructure drift detection.
+5. Reusable Terraform modules.
+6. DEV and PROD environment deployment.
+7. Terraform state backup and recovery.
+8. Kubernetes Service selector troubleshooting.
+
+### Technologies Used
+
+- Ubuntu
+- Terraform
+- Docker
+- Kubernetes
+- Kind
+- Git
+- GitHub Actions
+
+### Verification
+
+DEV environment: 3 Pods running.
+
+PROD environment: 3 Pods running.
+
+Application tested using Kubernetes port forwarding.
